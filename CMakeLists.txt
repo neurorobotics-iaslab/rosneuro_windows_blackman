@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
 			 roslib
 			 std_msgs
 			 pluginlib
-			 rosneuro_filters
 			 rosneuro_windows)
 
 find_package(Eigen3 REQUIRED)
@@ -39,11 +38,18 @@ catkin_package(
 	roslib
 	std_msgs
 	pluginlib
-	rosneuro_filters
 	rosneuro_windows
   DEPENDS
 )
 
+#################
+## Test ##
+#################
+
+catkin_add_gtest(TestBlackman test/TestBlackman.cpp)
+target_link_libraries(TestBlackman ${GTEST_BOTH_LIBRARIES} pthread gmock ${Eigen3_LIBRARIES})
+target_link_libraries(TestBlackman ${PROJECT_NAME} ${catkin_LIBRARIES})
+include_directories(${GTEST_INCLUDE_DIRS} gmock pthread include include/${PROJECT_NAME}/)
 
 ##############################################################################
 # Build
@@ -63,7 +69,7 @@ target_link_libraries(${PROJECT_NAME} ${Eigen3_LIBRARIES}
 ## Executables ##
 #################
 
-add_executable(blackman_window test/blackman_window.cpp)
+add_executable(blackman_window example/run.cpp)
 target_link_libraries(blackman_window ${PROJECT_NAME} ${catkin_LIBRARIES}) 
 
 
